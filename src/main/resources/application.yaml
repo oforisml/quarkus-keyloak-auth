@@ -1,6 +1,39 @@
 quarkus:
   http:
     port: 8008
+    auth:
+      permission:
+        authenticated:
+          paths: /*
+          policy: authenticated
+        public-api:
+          paths: /restaurant/public/list, /restaurant/public/menu/*, /swagger
+          policy: permit
+        admin-role-api:
+          paths: /restaurant
+          policy: admin-role-policy
+
+        manager-role-apis:
+          paths: /restaurant/menu, /order/{restaurantId}/list, /order/{orderId}
+          policy: admin-role-policy
+
+        update-price-api:
+          paths: /restaurant/menu/{menuItem}/{price}
+          policy: update-price-policy
+
+      policy:
+        admin-role-policy:
+          roles-allowed: admin
+
+        manager-role-policy:
+          roles-allowed: manager
+
+
+
+        update-price-policy:
+          roles-allowed: owner
+
+
   datasource:
     db-kind: postgresql
     username: sam
@@ -14,13 +47,17 @@ quarkus:
     unsupported-properties:
       "hibernate.physical_naming_strategy": org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
 
-
   oidc:
     auth-server-url: http://localhost:8080/realms/QUARKUS
 
-#  smallrye-openapi:
-#    path: /swagger
 
+
+
+  smallrye-openapi:
+    path: /swagger
+    security-scheme: oidc
+    security-scheme-name: Keycloak
+    oidc-open-id-connect-url: http://localhost:8080/realms/QUARKUS/.well-known-openid-configuration
 
   live-reload:
     instrumentation: true

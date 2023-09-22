@@ -78,14 +78,20 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-hibernate-orm-panache</artifactId>
     </dependency>
+<!--    When the authorization is done soly at keycloak level for the most part-->
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-keycloak-authorization</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.hibernate.orm</groupId>
       <artifactId>hibernate-core</artifactId>
     </dependency>
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-oidc</artifactId>
-    </dependency>
+<!--    When the security authorization is managed at the applicatoin level-->
+<!--    <dependency>-->
+<!--      <groupId>io.quarkus</groupId>-->
+<!--      <artifactId>quarkus-oidc</artifactId>-->
+<!--    </dependency>-->
     <dependency>
       <groupId>io.rest-assured</groupId>
       <artifactId>rest-assured</artifactId>

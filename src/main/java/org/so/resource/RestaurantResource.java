@@ -5,6 +5,7 @@ import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 import org.so.entity.Menu;
 import org.so.entity.MenuItem;
 import org.so.entity.Restaurant;
@@ -16,7 +17,7 @@ import java.util.List;
 //@Authenticated
 public class RestaurantResource {
     @GET
-    @Path("/list")
+    @Path("/public/list")
 //    @PermitAll
     public List<Restaurant> getRestaurants(){
         return Restaurant.listAll();
@@ -24,7 +25,7 @@ public class RestaurantResource {
 
 
     @GET
-    @Path("/menu/{restaurantId}")
+    @Path("/public/menu/{restaurantId}")
 //    @PermitAll
     public Menu getMenu(@PathParam("restaurantId") Long restaurantId){
         Menu menu = Menu.find("restaurantId =?1 and active", restaurantId).firstResult();
@@ -56,6 +57,7 @@ public class RestaurantResource {
     @PUT
     @Path("/menu/item/{item}/{price}")
     @Transactional
+    @SecurityRequirement(name = "Keycloak")
 //    @RolesAllowed("owner")
     public MenuItem createMenuItem(@PathParam("item") Long itemId,
                                    @PathParam("price")BigDecimal price){
